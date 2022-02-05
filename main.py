@@ -12,7 +12,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
             shutil.copy2(s, d)
 
 is_first_launch = True
-
+# initialize the Amethyst working directory if it does not exist
 if os.path.isdir("Amethyst"):
     is_first_launch = False
 else:
@@ -22,7 +22,7 @@ else:
     with open("Amethyst/shared_projects.txt", "w") as f:
         f.write("")
 
-
+# clone the repo if first launch
 if is_first_launch :
     repo = git.Repo.clone_from("git@github.com:TheLightmare/Amethyst_projects.git", "Amethyst/temp")
 else :
@@ -32,19 +32,29 @@ else :
 with open("Amethyst/shared_projects.txt") as f:
     projects = f.readlines()
 for project in projects :
-    if os.path.isdir(project.strip()) :
-        shutil.rmtree("Amethyst/temp/" + project.strip())
-        os.mkdir("Amethyst/temp/" + project.strip())
-        copytree(project.strip(), "Amethyst/temp/"+project.strip())
-        repo.index.add(project.strip() + "/*")
+    (name, raw_dirs) = project.split(" ")
+    dirs = raw_dirs.split(",")
 
-repo.index.commit("update")
-repo.remotes.origin.push()
+    if os.path.isdir(name) :
+        if os.path.isdir("Amethyst/temp/" + name):
+            shutil.rmtree("Amethyst/temp/" + name)
+        os.mkdir("Amethyst/temp/" + name)
+        for shared_dir in dirs :
+            os.mkdir(f"Amethyst/temp/{name}/{shared_dir}")
+            copytree(f"{name}/{shared_dir}", f"Amethyst/temp/{name}/{shared_dir}")
+        repo.index.add(name.strip() + "/*")
+        #we push if we have it
+        repo.index.commit("update")
+        repo.remotes.origin.push()
+
 repo.remotes.origin.pull()
+
 
 for dir in os.listdir("Amethyst/temp") :
     for project in projects :
-        if dir == project :
+        (name, raw_dirs) = project.split(" ")
+        dirs = raw_dirs.split(",")
+        if dir == name :
             if not os.path.isdir(dir) :
                 os.mkdir(dir)
             copytree("Amethyst/temp/"+dir, dir)

@@ -1,10 +1,9 @@
-Amethyst est un programme permettant de partager facilement et automatiquement des projets Obsidian via GitHub !
-
 Lancez le programme pour qu'il partage et mettre à jour vos projets !
 
-Pour partager ou suivre un projet, mettez juste son nom dans "Amethyst/shared.txt" !
+> Pour partager ou suivre un projet, mettez juste son nom dans "Amethyst/shared.txt" suivi des sous-dossier que vous voulez partager séparés par une virgule.
+  (ex : "MyProject Dir1,Dir2").
+  Si rien n'est spécifié, alors le projet ne sera pas partagé :'(
 
 ATTENTION :
-- Les projets que vous choisirez de partager seront accessibles à tout ceux possesseurs du logiciel,
-qui pourront suivre et modifier votre travail !
+- Les projets que vous choisirez de partager seront accessibles à tout ceux possesseurs du logiciel, qui pourront suivre et modifier votre travail !
 - Amethyst ne permet pas une sauvegarde en ligne ! Si vous supprimez vos fichiers, ils seront aussi supprimés sur le serveur !
